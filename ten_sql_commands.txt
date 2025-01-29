@@ -1,0 +1,147 @@
+1. List All Unique Email Addresses
+python
+Copy
+Edit
+query = "SELECT DISTINCT email FROM user_history;"
+cursor.execute(query)
+unique_emails = cursor.fetchall()
+print(unique_emails)
+
+===================================================================
+2. Count the Total Number of Emails in the Table
+python
+Copy
+Edit
+query = "SELECT COUNT(*) FROM user_history;"
+cursor.execute(query)
+total_emails = cursor.fetchone()
+print(total_emails)
+
+===================================================================
+3. Count the Number of Emails Received Per Day
+python
+Copy
+Edit
+query = """
+    SELECT DATE(date) AS email_date, COUNT(*) AS email_count 
+    FROM user_history 
+    GROUP BY email_date;
+"""
+cursor.execute(query)
+emails_per_day = cursor.fetchall()
+print(emails_per_day)
+
+
+===================================================================
+4. Find the First and Last Email Date for Each Email Address
+python
+Copy
+Edit
+query = """
+    SELECT email, 
+           MIN(date) AS first_email_date, 
+           MAX(date) AS last_email_date 
+    FROM user_history 
+    GROUP BY email;
+"""
+cursor.execute(query)
+email_dates = cursor.fetchall()
+print(email_dates)
+
+
+===================================================================
+5. Count the Total Number of Emails Sent from Each Domain
+python
+Copy
+Edit
+query = """
+    SELECT SUBSTRING_INDEX(email, '@', -1) AS domain, COUNT(*) AS email_count 
+    FROM user_history 
+    GROUP BY domain;
+"""
+cursor.execute(query)
+emails_per_domain = cursor.fetchall()
+print(emails_per_domain)
+
+
+===================================================================
+6. Retrieve All Emails Sent in a Specific Date Range
+For example, to find emails sent between 2025-01-01 and 2025-01-20:
+
+python
+Copy
+Edit
+query = """
+    SELECT * 
+    FROM user_history 
+    WHERE date BETWEEN '2025-01-01' AND '2025-01-20';
+"""
+cursor.execute(query)
+emails_in_range = cursor.fetchall()
+print(emails_in_range)
+
+
+===================================================================
+7. Find the Most Active Email Address (Max Emails Sent)
+python
+Copy
+Edit
+query = """
+    SELECT email, COUNT(*) AS email_count 
+    FROM user_history 
+    GROUP BY email 
+    ORDER BY email_count DESC 
+    LIMIT 1;
+"""
+cursor.execute(query)
+most_active_email = cursor.fetchone()
+print(most_active_email)
+
+
+===================================================================
+8. Find Emails Received on Weekends
+python
+Copy
+Edit
+query = """
+    SELECT * 
+    FROM user_history 
+    WHERE DAYOFWEEK(date) IN (1, 7);  -- 1 = Sunday, 7 = Saturday
+"""
+cursor.execute(query)
+weekend_emails = cursor.fetchall()
+print(weekend_emails)
+
+
+===================================================================
+9. Count Emails Per Hour of the Day
+python
+Copy
+Edit
+query = """
+    SELECT HOUR(date) AS hour_of_day, COUNT(*) AS email_count 
+    FROM user_history 
+    GROUP BY hour_of_day 
+    ORDER BY hour_of_day;
+"""
+cursor.execute(query)
+emails_per_hour = cursor.fetchall()
+print(emails_per_hour)
+
+
+===================================================================
+10. Retrieve Emails Sent by a Specific Domain
+For example, to find all emails sent by gmail.com:
+
+python
+Copy
+Edit
+query = """
+    SELECT * 
+    FROM user_history 
+    WHERE email LIKE '%@gmail.com';
+"""
+cursor.execute(query)
+gmail_emails = cursor.fetchall()
+print(gmail_emails)
+===================================================================
